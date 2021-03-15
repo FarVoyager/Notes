@@ -20,9 +20,7 @@ public class NotesDetailedActivity extends AppCompatActivity {
             NotesDetailedFragment notesDetailed = new NotesDetailedFragment();
             notesDetailed.setArguments(getIntent().getExtras());
 
-            System.out.println("INFLATION");
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, notesDetailed).commit();
-            System.out.println("INFLATION");
         }
     }
 }

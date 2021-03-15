@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="notes">
+        <item>Хар-ки нового ноута</item>
+        <item>График выгула собаки</item>
+        <item>Что купить в хозяйственном</item>
+        <item>Расписание тренировок</item>
+    </string-array>
+
+    <string-array name="descriptions">
+        <item>
+            Проц: Core-i7 1165 2.8Ггц
+            Оператива: 16Gb DDR4
+            SSD: 512Gb
+            Графика: nVidia MX350
+        </item>
+        <item>
+            Будни: 7:00, 13:00, 19:00
+            Выходные: 11:00, 17:00, 22:00
+        </item>
+        <item>
+            Стиральный порошок,
+            губки,
+            лампочки,
+            батарейки АА
+        </item>
+        <item>Вт, Чт: 19:00 до 20:00</item>
+    </string-array>
+</resources>

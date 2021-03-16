@@ -19,7 +19,6 @@ public class NotesDetailedActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             NotesDetailedFragment notesDetailed = new NotesDetailedFragment();
             notesDetailed.setArguments(getIntent().getExtras());
-
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, notesDetailed).commit();
         }
     }

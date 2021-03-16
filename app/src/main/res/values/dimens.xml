@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="edgeMarginPortrait">10dp</dimen>
+    <dimen name="descriptionTextSizePortrait">30sp</dimen>
+    <dimen name="dateTextSizePortrait">15sp</dimen>
+</resources>

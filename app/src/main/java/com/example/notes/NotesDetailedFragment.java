@@ -40,15 +40,17 @@ public class NotesDetailedFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Таким способом можно получить головной элемент из макета
+
         View view = inflater.inflate(R.layout.fragment_notes_detailed, container, false);
-        // найти в контейнере элемент
+
         TextView noteDescription = view.findViewById(R.id.noteDescription);
-        // Выбрать по индексу подходящий
         noteDescription.setText(note.getDescription());
-        // Установить название города
+
         TextView noteName = view.findViewById(R.id.noteName);
         noteName.setText(note.getName());
+
+        TextView noteDate = view.findViewById(R.id.noteDate);
+        noteDate.setText(note.getDate());
         return view;
 
     }

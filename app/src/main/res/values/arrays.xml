@@ -26,4 +26,12 @@
         </item>
         <item>Вт, Чт: 19:00 до 20:00</item>
     </string-array>
+
+    <string-array name="dates">
+        <item>12.03.2021</item>
+        <item>26.02.2021</item>
+        <item>02.01.2021</item>
+        <item>29.12.2020</item>
+    </string-array>
+
 </resources>

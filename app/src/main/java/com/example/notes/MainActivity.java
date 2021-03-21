@@ -115,11 +115,11 @@ public class MainActivity extends AppCompatActivity {
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 FragmentTransaction transaction = fragmentManager.beginTransaction();
                 transaction.addToBackStack(null);
-                transaction.replace(R.id.frame_portrait, aboutPage);
+                transaction.replace(R.id.noteDetailed, aboutPage);
                 transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
                 transaction.commit();
         }
-        return false;
+        return true;
     }
 
 }

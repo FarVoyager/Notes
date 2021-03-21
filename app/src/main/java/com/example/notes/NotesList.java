@@ -82,10 +82,7 @@ public class NotesList extends Fragment {
             subLayoutView.addView(textviewDate);
             layoutView.addView(subLayoutView);
 
-
-            // обработка нажатия на заметку
-            final int index = i;
-
+            // вызов popup menu долгим нажатием
             subLayoutView.setOnLongClickListener(v -> {
                 Activity activity = requireActivity();
                 PopupMenu popupMenu = new PopupMenu(activity, v);
@@ -106,6 +103,9 @@ public class NotesList extends Fragment {
                 popupMenu.show();
                 return true;
             });
+
+            // обработка нажатия на заметку
+            final int index = i;
 
             subLayoutView.setOnClickListener(v -> {
                 currentNote = new Note(getResources().getStringArray(R.array.notes)[index], getResources().getStringArray(R.array.descriptions)[index], getResources().getStringArray(R.array.dates)[index]);
@@ -130,11 +130,14 @@ public class NotesList extends Fragment {
         // выполняем транзакцию по замене фрагмента (написано что-то непонятное)
         FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.frame_portrait, notesDetailed);
+        fragmentTransaction.replace(R.id.noteDetailed, notesDetailed);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         fragmentTransaction.commit();
 
+        Intent intent = new Intent();
+        intent.setClass(getActivity(), NotesDetailedActivity.class);
+        intent.putExtra(NotesDetailedFragment.ARG_NOTE, note);
     }
 
     private void showNoteLandscape(Note note) {

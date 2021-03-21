@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 
@@ -52,6 +53,7 @@ public class NotesDetailedFragment extends Fragment {
         TextView noteDate = view.findViewById(R.id.noteDate);
         noteDate.setText(note.getDate());
         return view;
+
 
     }
 }

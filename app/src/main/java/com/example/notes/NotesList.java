@@ -1,5 +1,6 @@
 package com.example.notes;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -8,14 +9,19 @@ import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.LinearLayoutCompat;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -32,7 +38,8 @@ public class NotesList extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // непонятно
-        return inflater.inflate(R.layout.fragment_notes_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_notes_list, container, false);
+        return view;
     }
 
     @Override
@@ -41,14 +48,17 @@ public class NotesList extends Fragment {
         initList(view);
     }
 
+
     private void initList(View view) {
+
         LinearLayout layoutView = (LinearLayout) view;
         String[] dates = getResources().getStringArray(R.array.dates);
         String[] notes = getResources().getStringArray(R.array.notes);
-        for (int i = 0; i <notes.length; i++) {
+        for (int i = 0; i < notes.length; i++) {
             String note = notes[i];
             String date = dates[i];
             LinearLayoutCompat subLayoutView = new LinearLayoutCompat(getContext());
+            int subLayoutViewId = subLayoutView.getId();
             subLayoutView.setOrientation(LinearLayoutCompat.VERTICAL);
             TextView textviewName = new TextView(getContext());
             TextView textviewDate = new TextView(getContext());
@@ -58,13 +68,13 @@ public class NotesList extends Fragment {
 
             textviewDate.setText(date);
             textviewDate.setTextColor(Color.GRAY);
-            textviewDate.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+            textviewDate.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
             textviewDate.setBackgroundColor(noteColor);
 
             textviewName.setText(note);
             textviewName.setTextSize(25);
             textviewName.setTextColor(Color.BLACK);
-            textviewName.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+            textviewName.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
             textviewName.setBackgroundColor(noteColor);
 
             // добавление вьюшек в layouts
@@ -72,8 +82,31 @@ public class NotesList extends Fragment {
             subLayoutView.addView(textviewDate);
             layoutView.addView(subLayoutView);
 
+
             // обработка нажатия на заметку
             final int index = i;
+
+            subLayoutView.setOnLongClickListener(v -> {
+                Activity activity = requireActivity();
+                PopupMenu popupMenu = new PopupMenu(activity, v);
+                Menu menu = popupMenu.getMenu();
+                activity.getMenuInflater().inflate(R.menu.popup, menu);
+                popupMenu.setOnMenuItemClickListener(item -> {
+                    int id = item.getItemId();
+                    switch (id) {
+                        case R.id.favorite_popup:
+                            Toast.makeText(getContext(), "В Избранное", Toast.LENGTH_SHORT).show();
+                            return true;
+                        case R.id.delete_popup:
+                            Toast.makeText(getContext(), "Удалить", Toast.LENGTH_SHORT).show();
+                            return true;
+                    }
+                    return true;
+                });
+                popupMenu.show();
+                return true;
+            });
+
             subLayoutView.setOnClickListener(v -> {
                 currentNote = new Note(getResources().getStringArray(R.array.notes)[index], getResources().getStringArray(R.array.descriptions)[index], getResources().getStringArray(R.array.dates)[index]);
                 showNote(currentNote);
@@ -92,12 +125,16 @@ public class NotesList extends Fragment {
 
     private void showNotePortrait(Note note) {
 
-        // переходим на NotesDetailedActivity, т.к. к ней привязан фрагмент с деталями заметки
-        Intent intent = new Intent();
-        intent.setClass(getActivity(), NotesDetailedActivity.class);
-        // передаем с интентом экземпляр заметки, по которой было нажатие
-        intent.putExtra(NotesDetailedFragment.ARG_NOTE, note);
-        startActivity(intent);
+        // создаём новый фрагмент с текущей позицией
+        NotesDetailedFragment notesDetailed = NotesDetailedFragment.newInstance(note);
+        // выполняем транзакцию по замене фрагмента (написано что-то непонятное)
+        FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.frame_portrait, notesDetailed);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        fragmentTransaction.commit();
+
     }
 
     private void showNoteLandscape(Note note) {

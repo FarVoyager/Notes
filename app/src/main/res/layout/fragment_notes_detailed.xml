@@ -5,7 +5,10 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="#FFFAF096"
-    tools:context=".NotesDetailedFragment">
+    android:clickable="true"
+    android:focusable="true"
+    tools:context=".NotesDetailedFragment"
+>
 
 
         <LinearLayout

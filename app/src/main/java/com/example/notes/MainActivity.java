@@ -104,6 +104,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private boolean navigateFragment(int id, MenuItem item) {
+        System.out.println(item.getTitle() + " AIDI");
         switch (id) {
             case R.id.action_favorite:
                 Toast.makeText(MainActivity.this, item.getTitle(), Toast.LENGTH_SHORT).show();

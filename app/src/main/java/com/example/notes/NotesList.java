@@ -18,6 +18,8 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.widget.AppCompatImageView;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.LinearLayoutCompat;
@@ -37,53 +39,71 @@ public class NotesList extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // непонятно
-        View view = inflater.inflate(R.layout.fragment_notes_list, container, false);
-        return view;
+        //создаем RecyclerView и пихаем его в макет fragment_notes_list
+        RecyclerView recyclerView = (RecyclerView) inflater.inflate(R.layout.fragment_notes_list, container, false);
+        recyclerView.setHasFixedSize(true);
+
+        //создаем layout manager для RecyclerView и связываем их
+        LinearLayoutManager layoutManager = new LinearLayoutManager(recyclerView.getContext());
+        recyclerView.setLayoutManager(layoutManager);
+
+        //создаем adapter для RecyclerView и связываем их
+        ViewHolderAdapter viewHolderAdapter = new ViewHolderAdapter(inflater, new CardDataSourceImpl(getResources()));
+        viewHolderAdapter.setOnClickListener((v, position) -> {
+            final int index = position;
+
+            if (savedInstanceState == null) {
+                currentNote = new Note(getResources().getStringArray(R.array.notes)[0], getResources().getStringArray(R.array.descriptions)[0], getResources().getStringArray(R.array.dates)[0]);
+                showNote(currentNote);
+            } else {
+                currentNote = new Note(getResources().getStringArray(R.array.notes)[index], getResources().getStringArray(R.array.descriptions)[index], getResources().getStringArray(R.array.dates)[index]);
+                showNote(currentNote);
+            }
+        });
+        recyclerView.setAdapter(viewHolderAdapter);
+
+        return recyclerView;
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        initList(view);
-    }
 
 
-    private void initList(View view) {
+    //определяем класс ViewHolderAdapter ВНУТРИ класса списка (NotesList)
+    //
+    private class ViewHolderAdapter extends RecyclerView.Adapter<ViewHolder> {
+        private final LayoutInflater mInflater;
+        private final CardDataSource mDataSource;
+        private OnClickListener mOnClickListener;
 
-        LinearLayout layoutView = (LinearLayout) view;
-        String[] dates = getResources().getStringArray(R.array.dates);
-        String[] notes = getResources().getStringArray(R.array.notes);
-        for (int i = 0; i < notes.length; i++) {
-            String note = notes[i];
-            String date = dates[i];
-            LinearLayoutCompat subLayoutView = new LinearLayoutCompat(getContext());
-            int subLayoutViewId = subLayoutView.getId();
-            subLayoutView.setOrientation(LinearLayoutCompat.VERTICAL);
-            TextView textviewName = new TextView(getContext());
-            TextView textviewDate = new TextView(getContext());
+        public ViewHolderAdapter(LayoutInflater mInflater, CardDataSource mDataSource) {
+            this.mInflater = mInflater;
+            this.mDataSource = mDataSource;
+        }
 
-            // оформление вьюшек
-            int noteColor = Color.parseColor("#FFFAF096");
+        public void setOnClickListener(OnClickListener onClickListener) {
+            mOnClickListener = onClickListener;
+        }
 
-            textviewDate.setText(date);
-            textviewDate.setTextColor(Color.GRAY);
-            textviewDate.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-            textviewDate.setBackgroundColor(noteColor);
+        @NonNull
+        @Override
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View v = mInflater.inflate(R.layout.list_item, parent, false);
+            return new ViewHolder(v);
+        }
 
-            textviewName.setText(note);
-            textviewName.setTextSize(25);
-            textviewName.setTextColor(Color.BLACK);
-            textviewName.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-            textviewName.setBackgroundColor(noteColor);
+        @Override
+        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+            CardData cardData = mDataSource.getItemAt(position);
+            holder.populate(cardData);
 
-            // добавление вьюшек в layouts
-            subLayoutView.addView(textviewName);
-            subLayoutView.addView(textviewDate);
-            layoutView.addView(subLayoutView);
+            //клик по вьюшке
+            holder.itemView.setOnClickListener(v -> {
+                if (mOnClickListener !=null) {
+                    mOnClickListener.onItemClick(v, position);
+                }
+            });
 
             // вызов popup menu долгим нажатием
-            subLayoutView.setOnLongClickListener(v -> {
+            holder.itemView.setOnLongClickListener(v -> {
                 Activity activity = requireActivity();
                 PopupMenu popupMenu = new PopupMenu(activity, v);
                 Menu menu = popupMenu.getMenu();
@@ -103,16 +123,77 @@ public class NotesList extends Fragment {
                 popupMenu.show();
                 return true;
             });
+        }
 
-            // обработка нажатия на заметку
-            final int index = i;
-
-            subLayoutView.setOnClickListener(v -> {
-                currentNote = new Note(getResources().getStringArray(R.array.notes)[index], getResources().getStringArray(R.array.descriptions)[index], getResources().getStringArray(R.array.dates)[index]);
-                showNote(currentNote);
-            });
+        @Override
+        public int getItemCount() {
+            return mDataSource.getItemsCount();
         }
     }
+
+    //определяем класс ViewHolder ВНУТРИ класса списка (NotesList)
+    //определяем в нем элементы UI (вьюшки), которые будут в нашем RecyclerView
+    //ViewHolder хранит соответствия между элементом списка и элементами UI
+    private static class ViewHolder extends RecyclerView.ViewHolder {
+        public final TextView text;
+        public final AppCompatImageView image;
+        public ViewHolder(@NonNull View itemView) {
+            super(itemView);
+            text = itemView.findViewById(R.id.list_item_text);
+            image = itemView.findViewById(R.id.list_item_img);
+        }
+
+        //класс populate связывает данные карточки (CardView) и вьюшки в элементе CardView макета
+        public void populate(CardData data) {
+            text.setText(data.text);
+            image.setImageResource(data.imageResourceId);
+        }
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+//        initList(view);
+    }
+
+    private interface OnClickListener {
+        void onItemClick(View v, int position);
+    }
+
+
+//    private void initList(View view) {
+//
+//        LinearLayout layoutView = (LinearLayout) view;
+//        String[] dates = getResources().getStringArray(R.array.dates);
+//        String[] notes = getResources().getStringArray(R.array.notes);
+//        for (int i = 0; i < notes.length; i++) {
+//            String note = notes[i];
+//            String date = dates[i];
+//
+//            TextView textviewName = new TextView(getContext());
+//
+//            // оформление вьюшек
+//            int noteColor = Color.parseColor("#FFFAF096");
+//
+//            textviewName.setText(note);
+//            textviewName.setTextSize(25);
+//            textviewName.setTextColor(Color.BLACK);
+//            textviewName.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+//            textviewName.setBackgroundColor(noteColor);
+//
+//            layoutView.addView(textviewName);
+//
+//
+//
+//            // обработка нажатия на заметку
+//            final int index = i;
+//
+//            textviewName.setOnClickListener(v -> {
+//                currentNote = new Note(getResources().getStringArray(R.array.notes)[index], getResources().getStringArray(R.array.descriptions)[index], getResources().getStringArray(R.array.dates)[index]);
+//                showNote(currentNote);
+//            });
+//        }
+//    }
 
     // метод вызывает один из двух методов в зависимости от ориентации экрана
     private void showNote(Note note) {

@@ -14,4 +14,6 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="fragment_navigation">Fragment navigation</string>
     <string name="aboutDetailed">Заметки, 2021.03, by Oleg</string>
+    <string name="rename">Переименовать</string>
+    <string name="mainDrawerHeadText">Навигационное меню</string>
 </resources>

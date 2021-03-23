@@ -11,8 +11,10 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/fragment_navigation"
-        android:textSize="@dimen/nav_header_dimen"/>
+        android:text="@string/mainDrawerHeadText"
+        android:textSize="@dimen/nav_header_dimen"
+        android:textAlignment="textStart"
+        android:gravity="start" />
 
 </LinearLayout>
 

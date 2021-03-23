@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.widget.AppCompatImageView;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -42,6 +43,10 @@ public class NotesList extends Fragment {
         //создаем RecyclerView и пихаем его в макет fragment_notes_list
         RecyclerView recyclerView = (RecyclerView) inflater.inflate(R.layout.fragment_notes_list, container, false);
         recyclerView.setHasFixedSize(true);
+
+        DividerItemDecoration decorator = new DividerItemDecoration(requireActivity(), LinearLayoutManager.VERTICAL);
+        decorator.setDrawable(getResources().getDrawable(R.drawable.decoration));
+        recyclerView.addItemDecoration(decorator);
 
         //создаем layout manager для RecyclerView и связываем их
         LinearLayoutManager layoutManager = new LinearLayoutManager(recyclerView.getContext());
@@ -68,7 +73,7 @@ public class NotesList extends Fragment {
 
 
     //определяем класс ViewHolderAdapter ВНУТРИ класса списка (NotesList)
-    //
+    //в этом классе также реализуем слушатели нажатия
     private class ViewHolderAdapter extends RecyclerView.Adapter<ViewHolder> {
         private final LayoutInflater mInflater;
         private final CardDataSource mDataSource;
@@ -117,6 +122,9 @@ public class NotesList extends Fragment {
                         case R.id.delete_popup:
                             Toast.makeText(getContext(), "Удалить", Toast.LENGTH_SHORT).show();
                             return true;
+                        case R.id.rename_popup:
+                            Toast.makeText(getContext(), "Переименовать", Toast.LENGTH_SHORT).show();
+                            return true;
                     }
                     return true;
                 });
@@ -153,47 +161,12 @@ public class NotesList extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-//        initList(view);
     }
 
+    //интерфейс ВНУТРИ класса для обработки нажатия
     private interface OnClickListener {
         void onItemClick(View v, int position);
     }
-
-
-//    private void initList(View view) {
-//
-//        LinearLayout layoutView = (LinearLayout) view;
-//        String[] dates = getResources().getStringArray(R.array.dates);
-//        String[] notes = getResources().getStringArray(R.array.notes);
-//        for (int i = 0; i < notes.length; i++) {
-//            String note = notes[i];
-//            String date = dates[i];
-//
-//            TextView textviewName = new TextView(getContext());
-//
-//            // оформление вьюшек
-//            int noteColor = Color.parseColor("#FFFAF096");
-//
-//            textviewName.setText(note);
-//            textviewName.setTextSize(25);
-//            textviewName.setTextColor(Color.BLACK);
-//            textviewName.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-//            textviewName.setBackgroundColor(noteColor);
-//
-//            layoutView.addView(textviewName);
-//
-//
-//
-//            // обработка нажатия на заметку
-//            final int index = i;
-//
-//            textviewName.setOnClickListener(v -> {
-//                currentNote = new Note(getResources().getStringArray(R.array.notes)[index], getResources().getStringArray(R.array.descriptions)[index], getResources().getStringArray(R.array.dates)[index]);
-//                showNote(currentNote);
-//            });
-//        }
-//    }
 
     // метод вызывает один из двух методов в зависимости от ориентации экрана
     private void showNote(Note note) {
@@ -205,7 +178,6 @@ public class NotesList extends Fragment {
     }
 
     private void showNotePortrait(Note note) {
-
         // создаём новый фрагмент с текущей позицией
         NotesDetailedFragment notesDetailed = NotesDetailedFragment.newInstance(note);
         // выполняем транзакцию по замене фрагмента (написано что-то непонятное)

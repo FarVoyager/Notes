@@ -6,13 +6,14 @@ package com.example.notes;
 //        * Создайте полноценный заголовок для NavigationDrawer’а. К примеру, аватарка пользователя, его имя и какая-то дополнительная информация.
 
 
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Toast;
+
 import androidx.appcompat.widget.Toolbar;
 import androidx.appcompat.widget.SearchView;
 import androidx.core.view.GravityCompat;
@@ -54,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int id = item.getItemId();
-                if (navigateFragment(id, item)){
+                if (navigateFragment(id, item)) {
                     drawer.closeDrawer(GravityCompat.START);
                     return true;
                 }
@@ -83,6 +84,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, queryToSearch, Toast.LENGTH_SHORT).show();
                 return true;
             }
+
             // реагирует на нажатие каждой клавиши
             @Override
             public boolean onQueryTextChange(String newText) {
@@ -107,9 +109,9 @@ public class MainActivity extends AppCompatActivity {
         System.out.println(item.getTitle() + " AIDI");
         switch (id) {
             case R.id.action_favorite:
-                Toast.makeText(MainActivity.this, item.getTitle(), Toast.LENGTH_SHORT).show();
             case R.id.action_settings:
                 Toast.makeText(MainActivity.this, item.getTitle(), Toast.LENGTH_SHORT).show();
+                return true;
             case R.id.action_about:
                 About aboutPage = About.newInstance();
                 FragmentManager fragmentManager = getSupportFragmentManager();
@@ -118,6 +120,7 @@ public class MainActivity extends AppCompatActivity {
                 transaction.replace(R.id.noteDetailed, aboutPage);
                 transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
                 transaction.commit();
+                return true;
         }
         return true;
     }

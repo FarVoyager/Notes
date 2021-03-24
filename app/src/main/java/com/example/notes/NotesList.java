@@ -57,19 +57,13 @@ public class NotesList extends Fragment {
         viewHolderAdapter.setOnClickListener((v, position) -> {
             final int index = position;
 
-            if (savedInstanceState == null) {
-                currentNote = new Note(getResources().getStringArray(R.array.notes)[0], getResources().getStringArray(R.array.descriptions)[0], getResources().getStringArray(R.array.dates)[0]);
-                showNote(currentNote);
-            } else {
-                currentNote = new Note(getResources().getStringArray(R.array.notes)[index], getResources().getStringArray(R.array.descriptions)[index], getResources().getStringArray(R.array.dates)[index]);
-                showNote(currentNote);
-            }
+            currentNote = new Note(getResources().getStringArray(R.array.notes)[index], getResources().getStringArray(R.array.descriptions)[index], getResources().getStringArray(R.array.dates)[index]);
+            showNote(currentNote);
         });
         recyclerView.setAdapter(viewHolderAdapter);
 
         return recyclerView;
     }
-
 
 
     //определяем класс ViewHolderAdapter ВНУТРИ класса списка (NotesList)
@@ -102,7 +96,7 @@ public class NotesList extends Fragment {
 
             //клик по вьюшке
             holder.itemView.setOnClickListener(v -> {
-                if (mOnClickListener !=null) {
+                if (mOnClickListener != null) {
                     mOnClickListener.onItemClick(v, position);
                 }
             });
@@ -145,6 +139,7 @@ public class NotesList extends Fragment {
     private static class ViewHolder extends RecyclerView.ViewHolder {
         public final TextView text;
         public final AppCompatImageView image;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             text = itemView.findViewById(R.id.list_item_text);

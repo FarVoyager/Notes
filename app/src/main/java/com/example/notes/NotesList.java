@@ -44,6 +44,8 @@ public class NotesList extends Fragment {
         RecyclerView recyclerView = (RecyclerView) inflater.inflate(R.layout.fragment_notes_list, container, false);
         recyclerView.setHasFixedSize(true);
 
+        isLandscape = getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
+
         DividerItemDecoration decorator = new DividerItemDecoration(requireActivity(), LinearLayoutManager.VERTICAL);
         decorator.setDrawable(getResources().getDrawable(R.drawable.decoration));
         recyclerView.addItemDecoration(decorator);
@@ -178,11 +180,10 @@ public class NotesList extends Fragment {
         // выполняем транзакцию по замене фрагмента (написано что-то непонятное)
         FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.noteDetailed, notesDetailed);
         fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.replace(R.id.noteDetailed, notesDetailed);
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         fragmentTransaction.commit();
-
         Intent intent = new Intent();
         intent.setClass(getActivity(), NotesDetailedActivity.class);
         intent.putExtra(NotesDetailedFragment.ARG_NOTE, note);
@@ -194,6 +195,7 @@ public class NotesList extends Fragment {
         // выполняем транзакцию по замене фрагмента (написано что-то непонятное)
         FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.addToBackStack(null);
         fragmentTransaction.replace(R.id.noteDetailed, notesDetailed);
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         fragmentTransaction.commit();

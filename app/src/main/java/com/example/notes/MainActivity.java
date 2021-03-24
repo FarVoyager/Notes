@@ -1,7 +1,7 @@
 package com.example.notes;
 
 // Приложение вылетает в ландшафтной ориентации если при повороте экрана на экране NotesList, а не NoteDetailed (Exception: Fragment not attached to a context, context = null(Почему???))
-// фрагменты пихаются в backStack в ландшафтном режиме (ошибочно вызывается метод showNotePortrait, переменная isLandScape работает неправильно)
+// фрагменты notesDetailed в ландшафтном режиме закидываются в backStack (если не делать addToBackStack, то при нажатии кнопки "Назад" приложение закрывается, а не возвращается к notesList в портретной ориентации)
 // Избавиться от 2-ой активити (как???)
 
 import androidx.annotation.NonNull;

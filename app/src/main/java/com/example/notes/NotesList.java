@@ -185,7 +185,8 @@ public class NotesList extends Fragment {
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         fragmentTransaction.commit();
         Intent intent = new Intent();
-        intent.setClass(getActivity(), NotesDetailedActivity.class);
+        //заменил NoteDetailedActivity на NoteDetailedFragment для отвезки фрагмента NoteDetailed от 2-ой активити
+        intent.setClass(getActivity(), NotesDetailedFragment.class);
         intent.putExtra(NotesDetailedFragment.ARG_NOTE, note);
     }
 

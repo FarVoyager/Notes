@@ -67,6 +67,13 @@ public class NotesList extends Fragment {
         return recyclerView;
     }
 
+    public static NotesList newInstance() {
+        NotesList fragment = new NotesList();
+        Bundle args = new Bundle();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
 
     //определяем класс ViewHolderAdapter ВНУТРИ класса списка (NotesList)
     //в этом классе также реализуем слушатели нажатия
@@ -90,6 +97,8 @@ public class NotesList extends Fragment {
             View v = mInflater.inflate(R.layout.list_item, parent, false);
             return new ViewHolder(v);
         }
+
+
 
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
@@ -180,7 +189,7 @@ public class NotesList extends Fragment {
         // выполняем транзакцию по замене фрагмента (написано что-то непонятное)
         FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.addToBackStack("noteList");
         fragmentTransaction.replace(R.id.noteDetailed, notesDetailed);
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         fragmentTransaction.commit();

@@ -13,13 +13,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <fragment
+        <FrameLayout
             android:id="@+id/noteList"
-            android:name="com.example.notes.NotesList"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="5dp"/>
-    </FrameLayout>
+            android:layout_height="match_parent">
+        </FrameLayout>
 
+    </FrameLayout>
 
 </FrameLayout>

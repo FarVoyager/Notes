@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFAF096"
+    android:clickable="true"
+    android:focusable="true"
+    android:orientation="vertical"
+    tools:context=".NotesDetailedFragment">
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/list_item_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/edgeMarginPortrait"
+        android:text="@string/hello_blank_fragment"
+        android:textColor="@color/black"
+        android:textSize="@dimen/descriptionTextSizePortrait"
+        android:textStyle="bold" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/note_description_edit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_margin="@dimen/edgeMarginPortrait"
+        android:text="@string/blank_description"
+        android:textSize="@dimen/descriptionTextSizePortrait" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_save"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="@dimen/edgeMarginPortrait"
+        android:backgroundTint="#FF9800"
+        android:text="SAVE"
+        android:textSize="20sp" />
+
+</LinearLayout>

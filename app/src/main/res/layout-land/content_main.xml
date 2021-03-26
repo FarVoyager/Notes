@@ -11,13 +11,13 @@
     android:fitsSystemWindows="true"
     tools:showIn="@layout/app_bar_main">
 
-    <fragment android:name="com.example.notes.NotesList"
+    <FrameLayout
         android:id="@+id/noteList"
-
-        android:layout_weight="5"
         android:layout_width="0px"
         android:layout_height="match_parent"
-        android:layout_margin="5dp"/>
+        android:layout_weight="5">
+    </FrameLayout>
+
 
     <FrameLayout
         android:id="@+id/noteDivider"

@@ -31,6 +31,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //для сохранения измененных данных заметки
+        if (savedInstanceState == null) {
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction transaction = fragmentManager.beginTransaction();
+            transaction.replace(R.id.noteList, new NotesList());
+            transaction.commit();
+        }
+
         //при переходе экрана из landscape в portrait показывается фрагмент NoteList и очищается бэкстек
         if (savedInstanceState != null && getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
             FragmentManager fragmentManager = getSupportFragmentManager();
@@ -62,12 +70,8 @@ public class MainActivity extends AppCompatActivity {
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                int id = item.getItemId();
-                if (navigateFragment(id, item)) {
                     drawer.closeDrawer(GravityCompat.START);
                     return true;
-                }
-                return false;
             }
         });
     }
@@ -78,59 +82,7 @@ public class MainActivity extends AppCompatActivity {
         return toolbar;
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Здесь определяем меню приложения (активити)
-        getMenuInflater().inflate(R.menu.main, menu);
-        MenuItem search = menu.findItem(R.id.action_search); // поиск пункта меню поиска
-        SearchView searchText = (SearchView) search.getActionView(); // строка поиска
-        searchText.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            // реагирует на конец ввода поиска
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                String queryToSearch = searchText.getQuery().toString();
-                Toast.makeText(MainActivity.this, queryToSearch, Toast.LENGTH_SHORT).show();
-                return true;
-            }
 
-            // реагирует на нажатие каждой клавиши
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                return true;
-            }
-        });
 
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (navigateFragment(id, item)) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    private boolean navigateFragment(int id, MenuItem item) {
-        System.out.println(item.getTitle() + " AIDI");
-        switch (id) {
-            case R.id.action_favorite:
-            case R.id.action_settings:
-                Toast.makeText(MainActivity.this, item.getTitle(), Toast.LENGTH_SHORT).show();
-                return true;
-            case R.id.action_about:
-                About aboutPage = About.newInstance();
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                FragmentTransaction transaction = fragmentManager.beginTransaction();
-                transaction.addToBackStack(null);
-                transaction.replace(R.id.noteDetailed, aboutPage);
-                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-                transaction.commit();
-                return true;
-        }
-        return true;
-    }
 
 }

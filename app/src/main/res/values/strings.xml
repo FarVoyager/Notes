@@ -1,6 +1,19 @@
 <resources>
     <string name="app_name">Notes</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="blank_description">blank_description</string>
+    <string name="hello_blank_fragment">note name</string>
+    <string name="blank_description">description</string>
+    <string name="blank_date">date</string>
+    <string name="search">search</string>
+    <string name="favorite">Избранное</string>
+    <string name="toFavorite">В Избранное</string>
+    <string name="delete">Удалить</string>
+    <string name="settings">Настройки</string>
+    <string name="about">О приложении</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="fragment_navigation">Fragment navigation</string>
+    <string name="aboutDetailed">Заметки, 2021.03, by Oleg</string>
+    <string name="rename">Переименовать</string>
+    <string name="mainDrawerHeadText">Навигационное меню</string>
 </resources>

@@ -41,15 +41,17 @@ public class NotesList extends Fragment {
     public ViewHolderAdapter mViewHolderAdapter;
     public RecyclerView mRecyclerView;
 
-    public NotesList() {
-        setRetainInstance(true);
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
 
+        setHasOptionsMenu(true);
+        super.onCreate(savedInstanceState);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        setHasOptionsMenu(true);
+
 
         //создаем RecyclerView и пихаем его в макет fragment_notes_list
         mRecyclerView = (RecyclerView) inflater.inflate(R.layout.fragment_notes_list, container, false);
@@ -162,7 +164,6 @@ public class NotesList extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
         menu.clear();
         inflater.inflate(R.menu.main, menu);
     }

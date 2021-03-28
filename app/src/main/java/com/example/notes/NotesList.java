@@ -2,8 +2,10 @@ package com.example.notes;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -23,11 +25,13 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import java.util.Date;
+import java.util.LinkedList;
 
 
 public class NotesList extends Fragment {
 
     private static final String CURRENT_NOTE = "CurrentNote";
+    private static final String ARG_NOTE_LIST = "NoteList";
     private Note currentNote;
     private boolean isLandscape;
 
@@ -37,15 +41,20 @@ public class NotesList extends Fragment {
     public ViewHolderAdapter mViewHolderAdapter;
     public RecyclerView mRecyclerView;
 
+    public NotesList() {
+        setRetainInstance(true);
+
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         setHasOptionsMenu(true);
 
-
         //создаем RecyclerView и пихаем его в макет fragment_notes_list
         mRecyclerView = (RecyclerView) inflater.inflate(R.layout.fragment_notes_list, container, false);
         mRecyclerView.setHasFixedSize(true);
+
 
         isLandscape = getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
 
@@ -130,7 +139,9 @@ public class NotesList extends Fragment {
             currentNote = savedInstanceState.getParcelable(CURRENT_NOTE);
         } else {
             // если не появлялся - показываем самую первую
-            currentNote = new Note(getResources().getStringArray(R.array.notes)[0], getResources().getStringArray(R.array.descriptions)[0], getResources().getStringArray(R.array.dates)[0]);
+            if (mDataSource.getNoteData() != null) {
+                currentNote = new Note(getResources().getStringArray(R.array.notes)[0], getResources().getStringArray(R.array.descriptions)[0], getResources().getStringArray(R.array.dates)[0]);
+            }
         }
         if (isLandscape) {
             showNoteLandscape(currentNote);
@@ -151,6 +162,8 @@ public class NotesList extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        menu.clear();
         inflater.inflate(R.menu.main, menu);
     }
 
@@ -160,27 +173,15 @@ public class NotesList extends Fragment {
         switch (id) {
 
             case R.id.action_favorite:
-            case R.id.action_settings:
                 Toast.makeText(requireActivity(), item.getTitle(), Toast.LENGTH_SHORT).show();
                 return true;
 
             case R.id.action_add:
                 Note newNote = new Note("New Note", "", new Date().toString());
                 mDataSource.add(newNote);
-
                 int position = mDataSource.getItemsCount() - 1;
                 mViewHolderAdapter.notifyItemInserted(position);
                 mRecyclerView.scrollToPosition(position);
-                return true;
-
-            case R.id.action_about:
-                About aboutPage = About.newInstance();
-                FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-                FragmentTransaction transaction = fragmentManager.beginTransaction();
-                transaction.addToBackStack(null);
-                transaction.replace(R.id.noteDetailed, aboutPage);
-                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-                transaction.commit();
                 return true;
         }
         return true;
@@ -229,6 +230,4 @@ public class NotesList extends Fragment {
     void setLastSelectedPosition(int lastSelectedPosition) {
         mLastSelectedPosition = lastSelectedPosition;
     }
-
-
 }

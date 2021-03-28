@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -26,12 +27,17 @@ import android.view.Menu;
 
 import com.google.android.material.navigation.NavigationView;
 
+import java.util.LinkedList;
+import java.util.zip.Inflater;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
 
         //для сохранения измененных данных заметки
         if (savedInstanceState == null) {
@@ -72,8 +78,12 @@ public class MainActivity extends AppCompatActivity {
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int id = item.getItemId();
+                if (navigateFragment(id, item)){
                     drawer.closeDrawer(GravityCompat.START);
                     return true;
+                }
+                return false;
             }
         });
     }
@@ -84,7 +94,23 @@ public class MainActivity extends AppCompatActivity {
         return toolbar;
     }
 
-
-
+    private boolean navigateFragment(int id, MenuItem item) {
+        switch (id) {
+            case R.id.action_favorite:
+            case R.id.action_settings:
+                Toast.makeText(MainActivity.this, item.getTitle(), Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.action_about:
+                About aboutPage = About.newInstance();
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                transaction.addToBackStack(null);
+                transaction.replace(R.id.noteDetailed, aboutPage);
+                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                transaction.commit();
+                return true;
+        }
+        return true;
+    }
 
 }

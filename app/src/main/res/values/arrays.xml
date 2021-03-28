@@ -5,6 +5,8 @@
         <item>График выгула собаки</item>
         <item>Что купить в хозяйственном</item>
         <item>Расписание тренировок</item>
+<!--        <item>Some random note for scroll check</item>-->
+
     </string-array>
 
     <string-array name="descriptions">
@@ -25,5 +27,17 @@
             батарейки АА
         </item>
         <item>Вт, Чт: 19:00 до 20:00</item>
+<!--        <item>Some random description for scroll check</item>-->
+
     </string-array>
+
+    <string-array name="dates">
+        <item>12.03.2021</item>
+        <item>26.02.2021</item>
+        <item>02.01.2021</item>
+        <item>29.12.2020</item>
+<!--        <item>02.11.2020</item>-->
+
+    </string-array>
+
 </resources>

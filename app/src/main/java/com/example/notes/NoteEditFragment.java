@@ -17,6 +17,7 @@ public class NoteEditFragment extends Fragment {
     private static final String ARG_ITEM_INDEX = "NoteEditFragment.item_index";
     private int mCurrentItemIndex = - 1;
 
+
     public static NoteEditFragment newInstance(int index) {
         NoteEditFragment fragment = new NoteEditFragment();
         Bundle args = new Bundle();
@@ -39,15 +40,23 @@ public class NoteEditFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_note_edit, container, false);
 
-        final CardDataSource dataSource = CardDataSourceImpl.getInstance(getResources());
-        CardData cardData = dataSource.getItemAt(mCurrentItemIndex);
+        final DataSource dataSource = DataSourceImpl.getInstance(getResources());
+        Note currentNote = dataSource.getItemAt(mCurrentItemIndex);
 
-        final TextInputEditText editText = view.findViewById(R.id.list_item_text);
+        TextInputEditText editName = view.findViewById(R.id.list_item_text);
+        editName.setText(currentNote.getName());
+        TextInputEditText editDescription = view.findViewById(R.id.note_description_edit);
+        editDescription.setText(currentNote.getDescription());
 
         final MaterialButton btnSave = view.findViewById(R.id.btn_save);
         btnSave.setOnClickListener(v -> {
-            cardData.setText(editText.getText().toString());
-            System.out.println(cardData.getText() + " DATUM");
+            currentNote.setName(editName.getText().toString());
+            currentNote.setDescription(editDescription.getText().toString());
+            getFragmentManager().popBackStack();
+        });
+
+        final MaterialButton btnBack = view.findViewById(R.id.btn_back);
+        btnBack.setOnClickListener(v -> {
             getFragmentManager().popBackStack();
         });
 

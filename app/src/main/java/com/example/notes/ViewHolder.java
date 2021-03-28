@@ -21,8 +21,8 @@ class ViewHolder extends RecyclerView.ViewHolder {
     }
 
     //класс populate связывает данные карточки (CardView) и вьюшки в элементе CardView макета
-    public void populate(NotesList fragment, CardData data) {
-        text.setText(data.getText());
+    public void populate(NotesList fragment, Note data) {
+        text.setText(data.getName());
 
         itemView.setOnLongClickListener((v) -> {
             fragment.setLastSelectedPosition(getLayoutPosition());

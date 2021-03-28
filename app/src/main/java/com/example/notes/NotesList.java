@@ -11,10 +11,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.widget.AppCompatImageView;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.annotation.NonNull;
@@ -23,6 +21,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
+
+import java.util.Date;
 
 
 public class NotesList extends Fragment {
@@ -33,7 +33,7 @@ public class NotesList extends Fragment {
 
     protected int mLastSelectedPosition = -1;
 
-    public CardDataSource mCardDataSource;
+    public DataSource mDataSource;
     public ViewHolderAdapter mViewHolderAdapter;
     public RecyclerView mRecyclerView;
 
@@ -61,12 +61,12 @@ public class NotesList extends Fragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(mRecyclerView.getContext());
         mRecyclerView.setLayoutManager(layoutManager);
 
-        mCardDataSource = CardDataSourceImpl.getInstance(getResources());
+        mDataSource = DataSourceImpl.getInstance(getResources());
         //создаем adapter для RecyclerView и связываем их
-        mViewHolderAdapter = new ViewHolderAdapter(this, this, mCardDataSource);
+        mViewHolderAdapter = new ViewHolderAdapter(this, this, mDataSource);
         mViewHolderAdapter.setOnClickListener((v, position) -> {
             final int index = position;
-            currentNote = new Note(getResources().getStringArray(R.array.notes)[index], getResources().getStringArray(R.array.descriptions)[index], getResources().getStringArray(R.array.dates)[index]);
+            currentNote = mDataSource.getItemAt(index);
             showNote(currentNote);
         });
         mRecyclerView.setAdapter(mViewHolderAdapter);
@@ -165,8 +165,10 @@ public class NotesList extends Fragment {
                 return true;
 
             case R.id.action_add:
-                mCardDataSource.add(new CardData("New Note", R.drawable.ic_launcher_background));
-                int position = mCardDataSource.getItemsCount() - 1;
+                Note newNote = new Note("New Note", "", new Date().toString());
+                mDataSource.add(newNote);
+
+                int position = mDataSource.getItemsCount() - 1;
                 mViewHolderAdapter.notifyItemInserted(position);
                 mRecyclerView.scrollToPosition(position);
                 return true;
@@ -203,7 +205,7 @@ public class NotesList extends Fragment {
             }
         } else if (item.getItemId() == R.id.context_delete) {
             if (mLastSelectedPosition != -1) {
-                mCardDataSource.remove(mLastSelectedPosition);
+                mDataSource.remove(mLastSelectedPosition);
                 mViewHolderAdapter.notifyItemRemoved(mLastSelectedPosition);
             }
         } else {

@@ -4,11 +4,11 @@ import androidx.annotation.NonNull;
 
 import java.util.List;
 
-public interface CardDataSource {
-    List<CardData> getCardData();
-    CardData getItemAt(int idx);
+public interface DataSource {
+    List<Note> getNoteData();
+    Note getItemAt(int idx);
     int getItemsCount();
 
-    void add(@NonNull CardData data);
+    void add(@NonNull Note data);
     void remove(int position);
 }

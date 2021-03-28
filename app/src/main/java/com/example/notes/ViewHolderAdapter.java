@@ -1,14 +1,10 @@
 package com.example.notes;
 
-import android.app.Activity;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.RecyclerView;
 
 //определяем класс ViewHolderAdapter ВНУТРИ класса списка (NotesList)
@@ -17,10 +13,10 @@ public class ViewHolderAdapter extends RecyclerView.Adapter<ViewHolder> {
     private final NotesList mNotesList;
     private final NotesList mFragment;
     private final LayoutInflater mInflater;
-    private final CardDataSource mDataSource;
+    private final DataSource mDataSource;
     private NotesList.OnClickListener mOnClickListener;
 
-    public ViewHolderAdapter(NotesList fragment, NotesList notesList, CardDataSource dataSource) {
+    public ViewHolderAdapter(NotesList fragment, NotesList notesList, DataSource dataSource) {
         mFragment = fragment;
         mNotesList = notesList;
         mInflater = fragment.getLayoutInflater();
@@ -40,8 +36,8 @@ public class ViewHolderAdapter extends RecyclerView.Adapter<ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        CardData cardData = mDataSource.getItemAt(position);
-        holder.populate(mFragment, cardData);
+        Note noteData = mDataSource.getItemAt(position);
+        holder.populate(mFragment, noteData);
 
         //клик по вьюшке
         holder.itemView.setOnClickListener(v -> {

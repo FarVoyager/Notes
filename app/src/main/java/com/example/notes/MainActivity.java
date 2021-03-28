@@ -1,8 +1,10 @@
 package com.example.notes;
 
-// Приложение вылетает в ландшафтной ориентации если при повороте экрана на экране NotesList, а не NoteDetailed (Exception: Fragment not attached to a context, context = null(Почему???))
-// фрагменты notesDetailed в ландшафтном режиме закидываются в backStack (если не делать addToBackStack, то при нажатии кнопки "Назад" приложение закрывается, а не возвращается к notesList в портретной ориентации)
-// Избавиться от 2-ой активити (как???)
+//добавить подгрузку данных из класса Note, а не из CardData DONE
+//добавить функцию изменения описания заметки DONE
+//починить боковое меню
+//починить дублирование кнопки add при поворотах
+//сделать так чтобы заметки сохранялись
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;

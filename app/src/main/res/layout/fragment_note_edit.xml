@@ -31,11 +31,21 @@
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_save"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="70dp"
         android:layout_gravity="center_horizontal"
         android:layout_margin="@dimen/edgeMarginPortrait"
         android:backgroundTint="#FF9800"
         android:text="SAVE"
+        android:textSize="20sp" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_back"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="@dimen/edgeMarginPortrait"
+        android:backgroundTint="#FF9800"
+        android:text="BACK"
         android:textSize="20sp" />
 
 </LinearLayout>

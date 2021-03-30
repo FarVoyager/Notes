@@ -3,21 +3,41 @@ package com.example.notes;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.annotation.NonNull;
+
+import javax.annotation.Nullable;
+
 public class Note implements Parcelable {
+
+    @Nullable
+    private String mId;
+    @NonNull
     private String name;
+
     private String description;
     private String date;
 
-    public Note(String name, String description, String date) {
+    public Note(@NonNull String name, String description, String date) {
         this.name = name;
         this.description = description;
         this.date = date;
-
     }
+
+    @Nullable
+    public String getId() {
+        return mId;
+    }
+
+    public void setId(@Nullable String id) {
+        mId = id;
+    }
+
+    @NonNull
     public String getName() {
         return name;
     }
-    public void setName(String name) {
+
+    public void setName(@NonNull String name) {
         this.name = name;
     }
     public String getDescription() {

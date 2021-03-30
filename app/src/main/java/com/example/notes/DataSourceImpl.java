@@ -8,8 +8,8 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-public class DataSourceImpl implements DataSource {
-    public LinkedList<Note> mData = new LinkedList<>();
+public class DataSourceImpl extends BaseDataSource {
+
 
     //singleTone
     private volatile static DataSourceImpl sInstance;
@@ -35,30 +35,6 @@ public class DataSourceImpl implements DataSource {
         for (int i = 0; i < notesNames.length; i++) {
             mData.add(new Note(notesNames[i], notesDescriptions[i], notesDates[i]));
         }
-    }
-
-    @Override
-    public List<Note> getNoteData() {
-        return Collections.unmodifiableList(mData);
-    }
-
-    @Override
-    public Note getItemAt(int idx) {
-        return mData.get(idx);
-    }
-
-    @Override
-    public int getItemsCount() {
-        return mData.size();
-    }
-
-    @Override
-    public void add(@NonNull Note data) {
-        mData.add(data);
-    }
-
-    @Override
-    public void remove(int position) {
-        mData.remove(position);
+        notifyDataSetChanged();
     }
 }

@@ -37,9 +37,39 @@ public class NotesList extends Fragment {
 
     protected int mLastSelectedPosition = -1;
 
-    public DataSource mDataSource;
-    public ViewHolderAdapter mViewHolderAdapter;
-    public RecyclerView mRecyclerView;
+    private DataSource mDataSource;
+    private ViewHolderAdapter mViewHolderAdapter;
+    private RecyclerView mRecyclerView;
+
+    private DataSource.DataSourceListener mListener = new DataSource.DataSourceListener() {
+        @Override
+        public void onItemAdded(int idx) {
+            if (mViewHolderAdapter != null) {
+                mViewHolderAdapter.notifyItemInserted(idx);
+            }
+        }
+
+        @Override
+        public void onItemRemoved(int idx) {
+            if (mViewHolderAdapter != null) {
+                mViewHolderAdapter.notifyItemRemoved(idx);
+            }
+        }
+
+        @Override
+        public void onItemUpdated(int idx) {
+            if (mViewHolderAdapter != null) {
+                mViewHolderAdapter.notifyItemChanged(idx);
+            }
+        }
+
+        @Override
+        public void onDataSetChanged() {
+            if (mViewHolderAdapter != null) {
+                mViewHolderAdapter.notifyDataSetChanged();
+            }
+        }
+    };
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -72,9 +102,10 @@ public class NotesList extends Fragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(mRecyclerView.getContext());
         mRecyclerView.setLayoutManager(layoutManager);
 
-        mDataSource = DataSourceImpl.getInstance(getResources());
+        mDataSource = DataSourceFireBaseImpl.getInstance();
         //создаем adapter для RecyclerView и связываем их
         mViewHolderAdapter = new ViewHolderAdapter(this, this, mDataSource);
+        mDataSource.addDataSourceListener(mListener);
         mViewHolderAdapter.setOnClickListener((v, position) -> {
             final int index = position;
             currentNote = mDataSource.getItemAt(index);
@@ -155,6 +186,12 @@ public class NotesList extends Fragment {
     public void onSaveInstanceState(@NonNull Bundle outState) {
         outState.putParcelable(CURRENT_NOTE, currentNote);
         super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mDataSource.removeDataSourceListener(mListener);
     }
 
     @Override

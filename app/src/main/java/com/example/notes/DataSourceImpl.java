@@ -29,12 +29,16 @@ public class DataSourceImpl extends BaseDataSource {
     }
 
     private DataSourceImpl(Resources resources) {
-        String[] notesNames = resources.getStringArray(R.array.notes);
-        String[] notesDescriptions = resources.getStringArray(R.array.descriptions);
-        String[] notesDates = resources.getStringArray(R.array.dates);
-        for (int i = 0; i < notesNames.length; i++) {
-            mData.add(new Note(notesNames[i], notesDescriptions[i], notesDates[i]));
-        }
-        notifyDataSetChanged();
+
+        LinkedList<Note> fireData = mData;
+
+
+//        String[] notesNames = resources.getStringArray(R.array.notes);
+//        String[] notesDescriptions = resources.getStringArray(R.array.descriptions);
+//        String[] notesDates = resources.getStringArray(R.array.dates);
+//        for (int i = 0; i < notesNames.length; i++) {
+//            mData.add(new Note(notesNames[i], notesDescriptions[i], notesDates[i]));
+//        }
+//        notifyDataSetChanged();
     }
 }

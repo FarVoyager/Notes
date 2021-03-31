@@ -40,7 +40,7 @@ public class NoteEditFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_note_edit, container, false);
 
-        final DataSource dataSource = DataSourceImpl.getInstance(getResources());
+        final DataSource dataSource = DataSourceFireBaseImpl.getInstance();
         Note currentNote = dataSource.getItemAt(mCurrentItemIndex);
 
         TextInputEditText editName = view.findViewById(R.id.list_item_text);

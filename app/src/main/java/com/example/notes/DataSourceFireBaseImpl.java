@@ -21,7 +21,7 @@ public class DataSourceFireBaseImpl extends BaseDataSource {
     private final FirebaseFirestore mStore = FirebaseFirestore.getInstance();
     private final CollectionReference mCollection = mStore.collection(COLLECTION_NOTES);
 
-    //singleTone
+    //singleTon
     private volatile static DataSourceFireBaseImpl sInstance;
 
     public static DataSourceFireBaseImpl getInstance() {
@@ -47,15 +47,23 @@ public class DataSourceFireBaseImpl extends BaseDataSource {
     private void onFetchComplete(Task<QuerySnapshot> task) {
         if (task.isSuccessful()) {
             LinkedList<Note> data = new LinkedList<>();
+            System.out.println(task.getResult() + " HUI B");
+            System.out.println(data + "NICE HUI");
+
             for (QueryDocumentSnapshot document : task.getResult()) {
+                System.out.println(document + " HUI V");
                 data.add(new DataFromFirestore(document.getId(), document.getData()));
+
                 document.getId();
                 document.getData();
             }
             mData.clear();
             mData.addAll(data);
+            System.out.println(data + "NICE HUI");
+
             data.clear();
             notifyDataSetChanged();
+
         }
     }
 

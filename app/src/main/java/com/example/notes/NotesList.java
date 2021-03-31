@@ -1,4 +1,4 @@
-package com.example.notes;
+    package com.example.notes;
 
 import android.content.Context;
 import android.content.Intent;
@@ -24,6 +24,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import org.w3c.dom.ls.LSOutput;
+
 import java.util.Date;
 import java.util.LinkedList;
 
@@ -31,7 +33,6 @@ import java.util.LinkedList;
 public class NotesList extends Fragment {
 
     private static final String CURRENT_NOTE = "CurrentNote";
-    private static final String ARG_NOTE_LIST = "NoteList";
     private Note currentNote;
     private boolean isLandscape;
 
@@ -103,6 +104,8 @@ public class NotesList extends Fragment {
         mRecyclerView.setLayoutManager(layoutManager);
 
         mDataSource = DataSourceFireBaseImpl.getInstance();
+        System.out.println(mDataSource.getItemsCount() + " HUI");
+        System.out.println(mDataSource.getNoteData().isEmpty() + " HUI");
         //создаем adapter для RecyclerView и связываем их
         mViewHolderAdapter = new ViewHolderAdapter(this, this, mDataSource);
         mDataSource.addDataSourceListener(mListener);

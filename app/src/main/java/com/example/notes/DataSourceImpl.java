@@ -7,7 +7,8 @@ import androidx.annotation.NonNull;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-
+//класс больше не нужен, но не уверен, стоит ли его сейчас удалять, на всякий случай оставлю
+//всё теперь подтягивается из DataSourceFireBaseImpl
 public class DataSourceImpl extends BaseDataSource {
 
 
@@ -30,15 +31,5 @@ public class DataSourceImpl extends BaseDataSource {
 
     private DataSourceImpl(Resources resources) {
 
-        LinkedList<Note> fireData = mData;
-
-
-//        String[] notesNames = resources.getStringArray(R.array.notes);
-//        String[] notesDescriptions = resources.getStringArray(R.array.descriptions);
-//        String[] notesDates = resources.getStringArray(R.array.dates);
-//        for (int i = 0; i < notesNames.length; i++) {
-//            mData.add(new Note(notesNames[i], notesDescriptions[i], notesDates[i]));
-//        }
-//        notifyDataSetChanged();
     }
 }

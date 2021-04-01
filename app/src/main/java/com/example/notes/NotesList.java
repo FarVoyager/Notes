@@ -103,9 +103,8 @@ public class NotesList extends Fragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(mRecyclerView.getContext());
         mRecyclerView.setLayoutManager(layoutManager);
 
+        //получаем данные, загруженные из FireStore
         mDataSource = DataSourceFireBaseImpl.getInstance();
-        System.out.println(mDataSource.getItemsCount() + " HUI");
-        System.out.println(mDataSource.getNoteData().isEmpty() + " HUI");
         //создаем adapter для RecyclerView и связываем их
         mViewHolderAdapter = new ViewHolderAdapter(this, this, mDataSource);
         mDataSource.addDataSourceListener(mListener);

@@ -11,15 +11,25 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 public class DataSourceFireBaseImpl extends BaseDataSource {
 
     private final static String COLLECTION_NOTES = "CollectionNotes";
     private final static String TAG = "DataSourceFireBaseImpl";
 
+    public static final String FIELD_ID = "id";
+    public static final String FIELD_NAME = "name";
+    public static final String FIELD_DESCRIPTION = "description";
+    public static final String FIELD_DATE = "date";
+
     private final FirebaseFirestore mStore = FirebaseFirestore.getInstance();
     private final CollectionReference mCollection = mStore.collection(COLLECTION_NOTES);
+    private LinkedList<Note> data = new LinkedList<Note>();
 
     //singleTon
     private volatile static DataSourceFireBaseImpl sInstance;
@@ -38,29 +48,24 @@ public class DataSourceFireBaseImpl extends BaseDataSource {
         return instance;
     }
 
+
     private DataSourceFireBaseImpl() {
-        mCollection.orderBy("Date", Query.Direction.DESCENDING).get()
+        mCollection.orderBy("name", Query.Direction.ASCENDING).get()
                 .addOnCompleteListener(this::onFetchComplete)
                 .addOnFailureListener(this::onFetchFailed);
     }
 
     private void onFetchComplete(Task<QuerySnapshot> task) {
+        data = new LinkedList<>();
         if (task.isSuccessful()) {
-            LinkedList<Note> data = new LinkedList<>();
-            System.out.println(task.getResult() + " HUI B");
-            System.out.println(data + "NICE HUI");
 
             for (QueryDocumentSnapshot document : task.getResult()) {
-                System.out.println(document + " HUI V");
                 data.add(new DataFromFirestore(document.getId(), document.getData()));
-
                 document.getId();
                 document.getData();
             }
             mData.clear();
             mData.addAll(data);
-            System.out.println(data + "NICE HUI");
-
             data.clear();
             notifyDataSetChanged();
 
@@ -90,6 +95,30 @@ public class DataSourceFireBaseImpl extends BaseDataSource {
         String id = mData.get(position).getId();
         mCollection.document(id).delete();
         super.remove(position);
-
     }
+
+    @Override
+    public void update(@NonNull Note data) {
+        String id = data.getId();
+
+        if (id != null) {
+            int idx = 0;
+            for (Note note : mData) {
+                if (id.equals(note.getId())) {
+
+                    note.setName(data.getName());
+                    note.setDescription(data.getDescription());
+                    note.setDate(data.getDate());
+                    notifyUpdated(idx);
+
+                    mCollection.document(id).update(FIELD_NAME, note.getName(), FIELD_DESCRIPTION, note.getDescription(),
+                            FIELD_DATE, note.getDate());
+                    super.update(note);
+                    return;
+                }
+                idx++;
+            }
+        }
+    }
+
 }

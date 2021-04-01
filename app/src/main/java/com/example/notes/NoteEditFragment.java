@@ -52,7 +52,10 @@ public class NoteEditFragment extends Fragment {
         btnSave.setOnClickListener(v -> {
             currentNote.setName(editName.getText().toString());
             currentNote.setDescription(editDescription.getText().toString());
+
             dataSource.update(currentNote);
+
+
             getFragmentManager().popBackStack();
         });
 

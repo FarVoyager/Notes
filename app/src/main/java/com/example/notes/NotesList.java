@@ -199,12 +199,19 @@ public class NotesList extends Fragment {
     }
 
     @Override
+    public void onDestroy() {
+        setHasOptionsMenu(false);
+        super.onDestroy();
+    }
+
+    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
     }
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
         menu.clear();
         inflater.inflate(R.menu.main, menu);
     }
@@ -231,6 +238,7 @@ public class NotesList extends Fragment {
 
     @Override
     public void onCreateContextMenu(@NonNull ContextMenu menu, @NonNull View v, @Nullable ContextMenu.ContextMenuInfo menuInfo) {
+        System.out.println("gig");
         menu.clear();
         super.onCreateContextMenu(menu, v, menuInfo);
         MenuInflater menuInflater = requireActivity().getMenuInflater();
@@ -239,6 +247,7 @@ public class NotesList extends Fragment {
 
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
+        System.out.println("gig " + (mLastSelectedPosition != -1) + mLastSelectedPosition);
         if (item.getItemId() == R.id.context_edit) {
             if (mLastSelectedPosition != -1) {
                 FragmentManager fragmentManager = getFragmentManager();
@@ -281,6 +290,8 @@ public class NotesList extends Fragment {
     }
 
     void setLastSelectedPosition(int lastSelectedPosition) {
+
         mLastSelectedPosition = lastSelectedPosition;
+        System.out.println("gig " + mLastSelectedPosition);
     }
 }

@@ -1,6 +1,8 @@
     package com.example.notes;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -229,6 +231,7 @@ public class NotesList extends Fragment {
 
     @Override
     public void onCreateContextMenu(@NonNull ContextMenu menu, @NonNull View v, @Nullable ContextMenu.ContextMenuInfo menuInfo) {
+        menu.clear();
         super.onCreateContextMenu(menu, v, menuInfo);
         MenuInflater menuInflater = requireActivity().getMenuInflater();
         menuInflater.inflate(R.menu.context_menu_main, menu);
@@ -246,8 +249,18 @@ public class NotesList extends Fragment {
             }
         } else if (item.getItemId() == R.id.context_delete) {
             if (mLastSelectedPosition != -1) {
-                mDataSource.remove(mLastSelectedPosition);
-                mViewHolderAdapter.notifyItemRemoved(mLastSelectedPosition);
+
+                //диалоговое окно с подтверждением удаления
+                AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
+                builder.setTitle("Подтвердите действие").setMessage("Удалить заметку?")
+                        .setNegativeButton("Нет", (dialog, which) -> {
+                        })
+                        .setPositiveButton("Да", (dialog, which) -> {
+                            mDataSource.remove(mLastSelectedPosition);
+                            mViewHolderAdapter.notifyItemRemoved(mLastSelectedPosition);
+                        });
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
             }
         } else {
             return super.onContextItemSelected(item);

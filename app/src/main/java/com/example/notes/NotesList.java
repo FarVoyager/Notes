@@ -76,7 +76,6 @@ public class NotesList extends Fragment {
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
-
         setHasOptionsMenu(true);
         super.onCreate(savedInstanceState);
     }
@@ -238,7 +237,7 @@ public class NotesList extends Fragment {
 
     @Override
     public void onCreateContextMenu(@NonNull ContextMenu menu, @NonNull View v, @Nullable ContextMenu.ContextMenuInfo menuInfo) {
-        System.out.println("gig");
+        System.out.println("gig onCreateContext value: " + mLastSelectedPosition);
         menu.clear();
         super.onCreateContextMenu(menu, v, menuInfo);
         MenuInflater menuInflater = requireActivity().getMenuInflater();
@@ -247,7 +246,7 @@ public class NotesList extends Fragment {
 
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
-        System.out.println("gig " + (mLastSelectedPosition != -1) + mLastSelectedPosition);
+        System.out.println("gig onContextItemSelected value: " + (mLastSelectedPosition != -1) + mLastSelectedPosition);
         if (item.getItemId() == R.id.context_edit) {
             if (mLastSelectedPosition != -1) {
                 FragmentManager fragmentManager = getFragmentManager();

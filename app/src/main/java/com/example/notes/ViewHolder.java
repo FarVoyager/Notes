@@ -25,6 +25,7 @@ class ViewHolder extends RecyclerView.ViewHolder {
         text.setText(data.getName());
 
         itemView.setOnLongClickListener((v) -> {
+            System.out.println("gig getLayoutPosition: " + getLayoutPosition());
             fragment.setLastSelectedPosition(getLayoutPosition());
             return false;
         });

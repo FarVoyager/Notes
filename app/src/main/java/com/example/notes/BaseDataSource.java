@@ -77,9 +77,11 @@ public abstract class BaseDataSource implements DataSource {
     @Override
     public void remove(int position) {
         mData.remove(position);
-        for (DataSourceListener listener : mListeners) {
-            listener.onItemRemoved(position);
-        }
+
+        // без строк ниже удаление отображается нормально
+//        for (DataSourceListener listener : mListeners) {
+//            listener.onItemRemoved(position);
+//        }
     }
 
 }

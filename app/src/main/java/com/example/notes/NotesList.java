@@ -175,9 +175,9 @@ public class NotesList extends Fragment {
             currentNote = savedInstanceState.getParcelable(CURRENT_NOTE);
         } else {
             // если не появлялся - показываем самую первую
-            if (mDataSource.getNoteData() != null) {
-                currentNote = new Note(getResources().getStringArray(R.array.notes)[0], getResources().getStringArray(R.array.descriptions)[0], getResources().getStringArray(R.array.dates)[0]);
-            }
+//            if (mDataSource.getNoteData() != null) {
+//                currentNote = new Note(getResources().getStringArray(R.array.notes)[0], getResources().getStringArray(R.array.descriptions)[0], getResources().getStringArray(R.array.dates)[0]);
+//            }
         }
         if (isLandscape) {
             showNoteLandscape(currentNote);
